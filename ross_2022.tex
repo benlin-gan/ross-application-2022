@@ -1,0 +1,276 @@
+\documentclass{article}
+\title{Ross Application Problems 2022}
+\date{2022-02-12}
+\author{Benlin Gan}
+\usepackage{amsmath}
+\usepackage{amsfonts, amssymb}
+\DeclareMathOperator{\lcm}{lcm}
+\usepackage{csvsimple}
+\begin{document}
+  \maketitle
+  \newpage
+  \section{Problem 1: Powers of 2 in $\mathbb{Z}_m$}
+  \subsection{Playing with $\mathbb{Z}_m$}
+  \begin{align*}
+    (2^n) &= (2, 4, 6, 8, 16, 32, 64, 60, 52, 36, 4, 6, 8, ...)   \hspace{1em}  (\textrm{in } \mathbb{Z}_{68})\\ 
+    (2^n) &= (2, 4, 6, 8, 16, 32, 64, 29, 58, 17, ..., 62, 25, 50, 1, 2, 4, 8 ...) \hspace{1em}     (\textrm{in } \mathbb{Z}_{99})\\
+    (2^n) &= (2, 4, 6, 8, 16, 32, 64, 1, ...) \hspace{1em}     (\textrm{in } \mathbb{Z}_{127})\\
+  \end{align*}
+  \subsection{Part A: Proof of Periodicity}
+  Assume there exists a $\exists k, l \in \mathbb{N}$ such that $k \neq l$, and $2^k \equiv 2^l \mod m$. Then
+  \begin{align}
+    2^k - 2^l \mid m
+  \end{align}
+  Then since any multiple of a number is divisible by everything the original number was divisible by:
+  \begin{align}
+    2^i(2^k - 2^l) &\mid m, \forall i \in \mathbb{N}\\
+    2^{k+i} \equiv 2^{l+i} &\mod m, \forall i \in \mathbb{N}
+  \end{align}
+  Therefore once we find one repeated element in $(2^n)$, everything after it also repeats. Furthermore, we know that this repeated element $(2^k, 2^l)$ must exist, because there are only $m$ unique elements in $\mathbb{Z}_m$, but an infinite number of elements in $(2^n)$.
+  \subsection{Part B: Tail Function}
+  \subsubsection{Tail = 0}
+  If $\rho (m) = 0$, then there exists a postive integer $k > 1$ such that $2^k \equiv 2^1 \mod m$. Then $2^k - 2 \mid m$. This simple manipulation also proves the converse, that $p(m) = 0$ for all $m$ where there exists a postive integer $k$, such that $2^k - 2$ is a multiple of $m$.\\
+
+  Looking at the example given in the problem statment where $m=10$, we can see that $\rho(10) = 0$. We should be able to find a $k$ such that $2^k -2$ is a multiple of $m$, and indeed $k=5$ works.
+  \subsubsection{Tail = 1}
+  If $\rho (m) = 1$, then there exists a postive integer $k > 2$ such that $2^k \equiv 2^2 \mod m$, and $2^{k-1} \not\equiv 2^1 \mod m.$ Then, using the logic in the last section, if $\rho(m) = 1$, we should be able to find a $k$ such that $2^k - 4$ is a multiple of $m$ but $2^{k-1} - 2$ is not.\\
+
+  Looking at $\rho(28) = 1$, we can see that $28$ is a factor of $2^5 - 4$, but not a factor of $2^4 - 2$. 
+  \subsubsection{Tail = 2}
+  if $\rho (m) = 2$ then there exists a postive integer $k > 3$ such that $2^k \equiv 2^3 \mod m$, and $2^{k-1} \not\equiv 2^2 \mod m$, and $2^{k-2} \not\equiv 2^1 \mod m$. So, if $\rho(m) = 2$, we should be able to find a $k$ such that $2^k - 8$ is a multiple of $m$, but $2^{k-1} - 4$ and $2^{k-2} - 2$ aren't.
+  \subsubsection{Generalized Tail Finding}
+  Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ doesn't divide 2, but given a high enough $k$ it will divide the largest odd factor of $m$.\\
+
+  We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that $2^a \equiv 1 \mod m$.\\
+
+  Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$ \footnote{This implies that for odd numbers, the tail will be $-1$. Think of the repeated part as having already started, and the first term of $1$ being skipped. We know that $1$ must be a possible residual of $2^n \mod m, \forall m$, and thus that it must precede $2$. Since the first term is $2$, it's sort of like we added negative terms to the beginning of the sequence}.
+  \subsection{Part C: Determining the Period}
+  \subsubsection{Examples of Periods}
+  \begin{itemize}
+  \item $o(3) = 2$ : $(2, 1, 2, 1, 2 ...)$
+  \item $o(6) = 2$ : $(2, 4, 2, 4, 2 ...)$
+  \item $o(12)= 2$ : $(2, 4, 8, 4, 8 ...)$
+  \item It seems like $o(2m) = o(m)$
+  \item Additionally the repeating terms of $o(2m)$ are double the repeating terms of $o(m)$.
+  \end{itemize}
+  \subsubsection{Heuristics for Period Finding}
+  One way to formalize what we mean by the period, is that it is the smallest positive integer $x$, such that
+  \begin{equation}\label{perdef}
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bx} \mod m, a \geq \rho(m)
+  \end{equation}
+  In practice, we don't need to prove equation \eqref{perdef} holds for all $a$, because once we prove if for a single $a$, the rest follows due to the periodic nature of the $(2^n)$ sequence. Additionally, there are actually infinite solutions to \eqref{perdef}, for any solution $x$, all multiples of $x$, will also satisfy the equation. However, only the smallest solution to the equation is the period.\\
+  
+  This means that even if we can prove an equation of the form,
+  \begin{equation}\label{a}
+    2^i \equiv 2^{i+j} \mod m, i \geq \rho(m)
+  \end{equation}
+  We still won't know that $j$ is the period of $m$, only that $j$ is some multiple of the actual period.\\
+  
+  The period of any multiple of $m$ must be a multiple of the period of $m$, formally:
+  \begin{equation}\label{b}
+    o(m) = n \implies o(im) = jn \mid i, j \in \mathbb{N}
+  \end{equation}
+  To prove \eqref{b}, let $o(im) = r$. Then plugging into \eqref{perdef}:
+  \begin{equation}
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+br} \mod im, a \geq \rho(m)
+  \end{equation}
+  If the above equation, is true mod $im$, it is also true mod $m$, if we also plug in $b=1$, we get that
+  \begin{equation}
+    \forall a \in \mathbb{N}, 2^a \equiv 2^{a+r} \mod m, a \geq \rho(m)
+  \end{equation}
+  Compare this equation to what we get when we plug $m$ and $n$ into \eqref{perdef}:
+  \begin{equation}
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bn} \mod im, a \geq \rho(m)
+  \end{equation}
+  So $r$ must be equal to some $bn$ and we are done.\\
+
+  A lot of the equations above depend on some number being $\geq \rho(m)$. An easy way to deal with restriction is to note that $\rho(m)$ is cannot be larger than $m$, because there are only $m$ unique elements in $\mathbb{Z}_m$. 
+  \subsubsection{Proof of $o(2m) = o(m)$}
+  We know that $2^{2m+o(m)} \equiv 2^{2m} \mod m$. So, if we multiply both sides by two, we get that $2^{2m + o(m) + 1}\equiv 2^{2m+1} \mod 2m$, therefore by \eqref{a}, $o(m)$ is a multiple of $o(2m)$, and by \eqref{b}, $o(2m)$ is a multiple of $o(m)$, and putting these together we can conclude that $o(2m) = o(m)$  
+  \subsubsection{More Examples of Periods}
+  \begin{itemize}
+  \item $o(3) = 2$ : $(2, 1, 2, 1, 2 ...)$
+  \item $o(9) = 6$ : $(2, 4, 8, 7, 5, 1, 2, 4, 8 ...)$
+  \item $o(27) = 18$ : $(2, 4, 8, 16, 5, 10, 20, 13, 26, 25, 23, 19, 11, 22, 17, 7, 14, 1, 2, 4, 8 ...)$
+  \item Extrapolating, it seems like $o(3m) = 3o(m)$
+  \item (Editing: the above sems to only be true for numbers with factors that have large powers of 3)
+  \item $o(7) = 3$ and $o(21) = 6$ and $o(63) = 6$ but $o(189) = 18$ and $o(567) = 54$
+  \item 3 cases observed: $o(3m) = o(m)$, $o(3m) = 2o(m)$, or $o(3m) = 3o(m)$
+  \end{itemize}
+  \subsubsection{Proof for  $o(3m)$ if $m \nmid 3$}
+  Let $o(m) = n, n \nmid 3$. Then, $2^{3m+2n}-2^{3m}\mid m$. Simultaenously, $2^{3m+2n}-2^{3m} \mid 3$, so because $n$ is relatively prime to 3, $2^{3m+2n} - 2^{3m} \mid 3m$. So, $o(3m)$ is some factor of $2n$. However, $o(3m) \geq o(m)$, because if $2^{3m+o(3m)} \equiv 2^{3m} \mod 3m$, then $2^{3m+o(3m)} \equiv 2^{3m} \mod m$, so $o(m) \leq 3m+o(3m) - 3m = o(3m)$. Then $o(3m)$ is either $n$ or $2n$. To distinguish between these cases, we must consider if $2^{3m + n} - 2^{3m} \mid 3$. Clearly this is only true if n is even.
+  \subsubsection{Proof for $o(m)$ if $m \mid 3$}
+  In order for $2^{3m + o(m)} - 2^{3m}$ to divide $3m$, $\frac{2^{3m + o(m)} - 2^{3m}}{m}$ must divide 3. Dividing by $2^{3m}$, we get that $\frac{2^{o(m)}-1}{m}$ must divide 3. So, let us consider the power of the factor of 3 for all possible $o(m)$ in $2^{o(m)}-1$.\\
+  \begin{tabular} {|c|c|c|c|c|c|c|}
+    \hline $o(m)$                              & 1 & 2 & 3 & 4  &  5 & 6 \\
+    \hline $2^{o(m)}-1$                         & 1 & 3 & 7 & 15 & 31 & 63\\
+    \hline Highest power of 3 in $2^{o(m)}-1$   & 0 & 1 & 0 & 1  & 0  & 2 \\
+    \hline 
+  \end{tabular}\\
+  
+  It seems like we found another periodic pattern! Whenever $2^n$ is replaced with $2^{n+2}$, the same constant is added modulo 3, so every $3^1$ replacements, the power of 3 is one more than usual, every $3^2$ replacements, the power of 3 is two more than usual, etc. Thus, for all postive even $a$, the highest power of three in $2^a - 1$ is one more than the highest factor in $\frac{a}{2}$.\\
+
+  Thus, if $\frac{\frac{o(m)}{2} * 3}{m} \mid 3$, then $2^{o(m)}-1 \mid 3m$, so $2^{3m + o(m)}-2^{3m} \mid 3m$, so $o(3m)$ is a factor of $o(m)$. Taking into account the fact that $o(3m) \geq o(m)$ we can conclude that $o(3m) = o(m)$.\\
+
+  If instead $\frac{\frac{o(m)}{2} * 3}{m} \nmid 3$, just multiply both sides by three to get $\frac{\frac{3o(m)}{2} * 3}{m} \mid 3$. So $2^{3o(m)} - 1 \mid 3m$, so $2^{3m+3o(m)} - 2^{3m} \mid 3m$. So $o(3m)$ is a factor of $3o(m)$, but $o(3m)$ is also larger than $o(m)$, so it is either $m$ or $3m$, but it is not $m$, because otherwise we would have $\frac{\frac{o(m)}{2} * 3}{m} \mid 3$. 
+  \subsubsection{Summary of $o(3m)$}
+  $o(3m) = ko(m)$, where $k$ is equal to:
+  \begin{itemize}
+  \item $1$, If $m$ doesn't divide 3 and $o(m)$ is even
+  \item $2$, If $m$ doesn't divide 3 and $o(m)$ is odd
+  \item $1$, If $\frac{\frac{o(m)}{2} * 3}{m}$ divides 3
+  \item $3$, If $\frac{\frac{o(m)}{2} * 3}{m}$ doesn't divide 3
+  \end{itemize}
+  \subsection{Generalized Period Finding}
+  $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
+  \begin{itemize}
+  \item I conjecture that $o(m)o(n) = o(mn)$
+  \item if $\gcd(m, n) = 1$?
+  \item It might be useful to define $o(2)$ to be 1 rather than 0.
+  \end{itemize}
+  \subsubsection{Proof of $o(m)o(n) = o(mn)$}
+  Given that $2^m \equiv 2^{2m} \mod m$ and $2^n \equiv 2^{2n} \mod n$. Suppose also that $\exists k, l \in \mathbb{N}$ such that $2^k \equiv 0 \mod n$ and $2^l \equiv 0 \mod m$ then multiplying, we have:
+  \begin{align}
+    2^m &\equiv 2^{2m+k} \mod nm \\
+    2^n &\equiv 2^{2n+l} \mod nm 
+  \end{align}
+  \subsection{Other }
+  \section{Problem 2: Algebraic Properties}
+  \subsection{Properties Summary}
+  Given some set $S$ over which $+$ and $\times$ are defined it satisifies:
+  \begin{itemize}
+  \item Property $i$ iff $\nexists a \in S$ such that $a \times a = 1$ and $a \neq \pm 1$
+  \item Property $ii$ iff $\nexists x \in S$ such that $2x = 0$ and $x \neq 0$
+  \item Property $iii$ iff $\nexists c \in S$ such that $c \times c = 0$ and $c \neq 0$
+  \end{itemize}
+  \subsection{Examples of Sets}
+  \begin{itemize}
+  \item $\mathbb{Z}$ has properties $i$, $ii$, and $iii$\\
+    Given that $\forall n \in \mathbb{Z}$, $n$ is also $\in \mathbb{Q}$, and that $i+j=k$ and $ij=l$ over both $\mathbb{Q}$ and $\mathbb{Z}$, $\forall i, j \in \mathbb{Z}$, we can conclude that there are no counterexamples $a, x, c \in \mathbb{Z}$ as long as there are no counterexamples in $\mathbb{Q}$. Therefore, it is sufficient to prove properties $i$, $ii$, and $iii$ hold in $\mathbb{Q}$. 
+  \item $\mathbb{Q}$ has properties $i$, $ii$, and $iii$
+    \begin{enumerate}
+    \item if $a^2 = 1$ then $a^2-1 = 0$. If we solve this, we can conclude that $a$ must be $1$ or $-1$. We know that these are the only two solutions, because $a^2-1$ has degree 2. Thus, property $i$ holds for $\mathbb{Q}$.
+    \item Similarly, $2x = 0$ must have 1 solution, given that it is a 1st degree polynomial. That solution is clearly $x = 0$. Thus, property $ii$ holds for $\mathbb{Q}$.
+    \item For $c^2=0$, we see that the solution is $c=0$ with multiplicity 2, which makes it the only solution. Thus, property $iii$ holds for $\mathbb{Q}$.
+    \end{enumerate}
+  \item $4\mathbb{Z}$ has properties $i$, $ii$, and $iii$\\
+    We can use similar logic as $\mathbb{Z}$ given that $\forall n \in 4\mathbb{Z}$, $n$ is also $\in \mathbb{Q}$, and that $i+j=k$ and $ij=l$ over both $\mathbb{Q}$ and $4\mathbb{Z}$, $\forall i, j \in 4\mathbb{Z}$.
+  \item $\mathbb{Z}_3$ has properties $i$, $ii$, and $iii$\\
+    \begin{tabular} {|c|c|c|c|}
+      \hline $n$   & 0 & 1 & 2\\
+      \hline $2n$  & 0 & 2 & 1\\
+      \hline $n^2$ & 0 & 1 & 1\\                       
+      \hline 
+    \end{tabular}\\
+  \item $\mathbb{Z}_8$ has none of $i$, $ii$, or $iii$\\
+    \begin{tabular} {|c|c|c|c|c|c|c|c|c|}
+      \hline $n$   & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\ 
+      \hline $2n$  & 0 & 2 & 4 & 6 & 0 & 2 & 4 & 6\\
+      \hline $n^2$ & 0 & 1 & 4 & 1 & 0 & 1 & 4 & 1\\                       
+      \hline 
+    \end{tabular}\\
+    \begin{itemize}
+    \item $a=3,5$ are counterexamples for property $i$
+    \item $x=4$ is a counterexample for property $ii$
+    \item $c=4$ is a counterexample for property $iii$
+    \end{itemize}
+  \item $\mathbb{Z}_9$ has property $i$ and $ii$, but not $iii$\\
+    \begin{tabular} {|c|c|c|c|c|c|c|c|c|c|}
+      \hline $n$   & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8\\
+      \hline $2n$  & 0 & 2 & 4 & 6 & 8 & 1 & 3 & 5 & 7\\
+      \hline $n^2$ & 0 & 1 & 4 & 0 & 7 & 7 & 0 & 4 & 1\\                   
+      \hline 
+    \end{tabular}\\
+    \begin{itemize}
+    \item $c=3,6$ are counterexamples for property $iii$.
+    \end{itemize}
+  \item $4\mathbb{Z}_{12}$ has properties $i$, $ii$, and $iii$\\
+    \begin{tabular} {|c|c|c|c|}
+      \hline $n$   & 0 & 4 & 8\\
+      \hline $2n$  & 0 & 8 & 4\\
+      \hline $n^2$ & 0 & 4 & 4\\                       
+      \hline 
+    \end{tabular}\\
+  \item $\mathbb{Z}_{13}$ has property $i$ and $ii$, and $iii$\\
+    \begin{tabular} {|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline $n$   & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+      \hline $2n$  & 0 & 2 & 4 & 6 & 8 & 10 & 12 & 1 & 3 & 5 & 7 & 9 & 11\\
+      \hline $n^2$ & 0 & 1 & 4 & 9 & 3 & 12 & 10 & 10 & 12 & 3 & 9 & 4 & 1\\                   
+      \hline 
+    \end{tabular}\\
+  \end{itemize}
+  \subsection{Custom Property (Incomplete)}
+  Define property $iv$ such that it holds for a set $S$ if $\nexists d \in S$
+  \section{Problem 3: Rossie the Robot}
+  \subsection{Part A: Returning to the Start}
+  \subsubsection{A Toy Example}
+  With $SRSRSRSRSR$ and $\theta = 4\pi/5$, Rossie traces out a five pointed star.
+  \subsubsection{Generalizing}
+  Define $SR_n$ to be the sequence $SRSR...SR$ where $SR$ is repeated n times. $\forall p, q \in \mathbb{Z}$ and $\gcd(p,q) = 1$, if $\theta = \frac{2\pi p}{q}$, Rossie can return to Start by following the sequence $SR_q$  \footnote{This is only well-defined if $q$ is a positive integer. However, if $q$ is not, we can simply multiply both $p$ and $q$ by $-1$ to get an equivalent $\theta$.}.
+  \subsubsection{Proof}
+   If we map Rossie's movements on the complex plane with O at 0, we can see that before the $m$th $S$, Rossie has rotated an angle of $\frac{2\pi p(m-1)}{q}$. Therefore, after $SR_q$, Rossie ends up at:
+  \begin{equation}
+    \sum^{q}_{m=1}e^{\frac{2\pi p(m-1)i}{q}} = \sum^{q-1}_{m=0}e^{\frac{2\pi pmi}{q}}
+  \end{equation}
+  We note that the above sum equals a geometric series with initial term $e^{\frac{2\pi p*0*i}{q}} = e^0 = 1$, common ratio $e^{\frac{2\pi pi}{q}}$, and $q$ terms.
+  \begin{align}
+    \sum^{q-1}_{m=0}e^{\frac{2\pi pmi}{q}} = \frac{1-(e^{\frac{2\pi pi}{q}})^q}{1-e^{\frac{2\pi pi}{q}}}
+    = \frac{1-(e^{\pi i})^{2p}}{1 - e^{\frac{2\pi pi}{q}}}
+    = \frac{1-(-1)^{2p}}{1 - e^{\frac{2\pi pi}{q}}}
+    = 0
+  \end{align}
+  
+  Now that we have proved that following $SR_q$ leads Rossie back to O, we can prove that it also orients Rossie towards the positive x-axis by noting that Rossie must rotate $\frac{2\pi p}{q}$ radians q times, and thus rotates a total of $2\pi p$ radians, or $p$ full revolutions. Therefore, Rossie is also at Start after $SR_q$.
+  \subsection{Part B: Returning to O}
+    Using the complex plane idea again, we know that the path traced is equal to:
+  \begin{align}
+    3 + 2e^{\cos^{-1}(-\frac{1}{3})i} + 3e^{2\cos^{-1}(-\frac{1}{3}) i}\\
+  \end{align}
+  which we can reduce with the help of Euler's Formula
+  \begin{align}
+    &= 3 + 2(\cos(\cos^{-1}(-\frac{1}{3}))) + 2(\sin(\cos^{-1}(-\frac{1}{3})))i \\  
+    &\hspace{18px} + 3(\sin(2\cos^{-1}(-\frac{1}{3}))) + 3(\sin(2\cos^{-1}(-\frac{1}{3})))i \\
+    &= 3 + -\frac{2}{3} + \frac{4\sqrt2}{3} + 3(2\sin(\cos^{-1}(-\frac{1}{3}))\cos(\cos^{-1}(-\frac{1}{3})))\\
+    &\hspace{20px} + 3(\cos^2(\cos^{-1}(-\frac{1}{3})) - \sin^2(\cos^{-1}(-\frac{1}{3})))\\
+    &= \frac{7 + 4\sqrt2}{3} + 6(\frac{2\sqrt2 * -1}{3*3}) + 3((-\frac{1}{3})^2 - (\frac{2\sqrt2}{3})^2)\\
+    &= \frac{7 + 4\sqrt2 - 4\sqrt2}{3} + 3(\frac{1}{9} - \frac{8}{9})\\
+    &= \frac{7 - 7}{3} \\
+    &= 0
+  \end{align}
+  \subsubsection{Returning to Start}
+  In order for $\theta$ to have some sequence that returns to Start, it must necessarily after some amount of rotations orient towards the positive x-axis. At least one rotation must be done however, because after the first $S$, Rossie can only move rightwards, despite being to the left of O. In other words, there must $\exists k, l \in \mathbb{N}$ such that $k\theta = 2\pi l$ or $\frac{\theta}{2\pi} = \frac{l}{k}$. So, for proving that $\theta = \cos^{-1}(-\frac{1}{3})$ cannot return to Start, it is sufficient to prove that $\frac{\cos^{-1}(-\frac{1}{3})}{2\pi}$ is irrational.
+  \subsubsection{Proving Irrationality (Incomplete)}
+  Suppose that $\exists p, q \in \mathbb{Z}$ such that $\frac{\cos^{-1}(-\frac{1}{3})}{2\pi} = \frac{p}{q}$ then:
+  \begin{align}
+    = \frac{p}{q} 
+  \end{align}
+  \subsection{Part C: Generalizing Part B}
+  Given some angle $\theta$ and some sequence with $n$ rotations that brings it to O, there must exist a corresponding polynomial:
+  \begin{align}
+    \sum^{n-1}_{k=0}a_kz^k = 0
+  \end{align}
+  where the coefficient $a_k$ is the number of $S$'s in the sequence that happen between the $k$th and $k+1$th $R$ and $z = e^{i\theta}$. So given some set of coefficients $\{a_0, a_1, ..., a_{n-1} \mid a_j \in \mathbb{N}\}$, we can solve the corresponding polynomial to get some roots $\{z_0, z_1, ..., z_{n-1}\}$ Then from each of these we can get an angle $\theta_j$:
+  \begin{align}
+    z_j = e^{i\theta_j}\\
+    \theta_j = \frac{\ln(z_j)}{i}
+  \end{align}
+  After that, repeat over all $ n \in \mathbb{N}$ to get all $\theta$'s that return to O. Futhermore, if $\frac{\theta}{2\pi}$ is irrational, then $\theta$ doesn't return to Start.\\
+  
+  We can also apply this to note that the proof in Part A is a special case where all the coeeficients $a_j$ are equal to 1 (or equivalently, all the $a_j$ are equal to each other), the roots of which are the $n$th roots of unity, which add up to zero.
+  \subsection{Part D: Not Returning to O}
+  Then running the logic in Part C in reverse, if $\exists z \in \mathbb{C}$ such that there is no polynomial with non-negative integer coefficients that has $\frac{z}{\lvert z \rvert}$ as a root, then if Rossie has angle $\frac{\ln(\frac{z}{\lvert z \rvert})}{i}$, Rossie can never return to O.
+  \subsubsection{Proving Existence}
+  We can think of the operation in part D as a function $f$ that maps a set of $n$ $a_j$ to a set of $n$ $\theta_j$, $\forall n \in \mathbb{N}$. Consider the domain of $f$, $D$. $D$ has cardinality:
+  \begin{align}
+    \sum^{\aleph_0}_{k=0}\aleph_0^k = \aleph_0
+  \end{align}
+  Then, the range of $f$, $R$ also has cardinality $\leq \aleph_0$. Additionally, each element in $R$ has a maximum of $\aleph_0$ elements, so an upper bound on the cardinality of the union $U$ of the elements of $R$, is
+  \begin{align}
+    \rvert U \lvert \  \leq \aleph_0 \times \aleph_0 = \aleph_0
+  \end{align}
+  But $U$ is also the set of all angles $\theta$ which return to O. But there are only at most a countably infinite number of angles in $U$, but there are an uncountably infinite number of possible angles Rossie could have. Therefore there are an uncountably infinite number of angles which can never return to O.
+  \section{Appendix}
+  \subsection{Periods of the first 50 natural numbers }
+  made with python
+  \csvautotabular{periods.csv}
+\end{document}
