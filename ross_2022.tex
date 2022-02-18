@@ -147,7 +147,7 @@
 
   Thus, if $\frac{\frac{o(m)}{2} * 3}{m} \mid 3$, then $2^{o(m)}-1 \mid 3m$, so $2^{3m + o(m)}-2^{3m} \mid 3m$, so $o(m)$ is a multiple of $o(3m)$. Taking into account the fact that $o(3m)$ is a multiple of $o(m)$, we find that $o(m)= o(3m)$.\\
 
-  If instead $\frac{\frac{o(m)}{2} * 3}{m} \nmid 3$, just multiply both sides by three to get $\frac{\frac{3o(m)}{2} * 3}{m} \mid 3$. So instead $2^{3o(m)} - 1 \mid 3m$, so $2^{3m+3o(m)} - 2^{3m} \mid 3m$. So $3o(m)$ is a multiple of $o(3m)$, but $o(3m)$ is also a multiple of $o(m)$, which leaves only the solution $o(3m) = 3o(m)$.
+  If instead $\frac{\frac{o(m)}{2} * 3}{m} \nmid 3$, just multiply both sides by three to get $\frac{\frac{3o(m)}{2} * 3}{m} \mid 3$. So instead $2^{3o(m)} - 1 \mid 3m$, so $2^{3m+3o(m)} - 2^{3m} \mid 3m$. So $3o(m)$ is a multiple of $o(3m)$, but $o(3m)$ is also a multiple of $o(m)$, but not $o(m)$ (because otherwise the we could run the logic in the previous paragraph in reverse and reach a contradiction), which leaves only the solution $o(3m) = 3o(m)$.
   \subsubsection{Summary of $o(3m)$}
   $o(3m) = ko(m)$, where $k$ is equal to:
   \begin{itemize}
@@ -198,11 +198,31 @@
   \begin{equation}
     2^0 \equiv 2^{0+m^io(m)} \mod m^{i+1}
   \end{equation}
-  Using \eqref{a}, we can conclude that $m^io(m)$ is a multiple of $o(m^{i+1})$. Using \eqref{b}, we can conclude that $o(m^{i+1})$ is a multiple of $m^io(m)$. Thus, combined we have that:
+  Using \eqref{a}, we can conclude that $m^io(m)$ is a multiple of $o(m^{i+1})$. To prove instead that:
   \begin{equation}
     \forall m, i \in \mathbb{N}, m \nmid 2 \implies o(m^{i+1}) = m^io(m)
   \end{equation}
-  This result, allows us to find the period of any power of a prime number\footnote{Any power of 2 has period 1}. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well. 
+  We additionally need to prove that $m^i$ is the \emph{smallest} coefficient $k$ such that:
+  \begin{equation}
+    2^0 \equiv 2^{0 + ko(m)} \mod m^{i+1}
+  \end{equation}
+  It is easy to see that this is true for $i=0$, because:
+  \begin{equation}
+    2^0 \equiv 2^{0 + m^0o(m)} \mod m^{0+1}
+  \end{equation}
+  is a special case of the definition of $o(m)$, \eqref{perdef}, where $a=0$ and $b=1$. Then we do induction yet again. If we assume that $m^i$ is the smallest coefficient here:
+  \begin{align}
+    2^0 &\equiv 2^{0 + m^io(m)} \mod m^{i+1}\\
+    2^{m^io(m)} - 1 &\mid m^{i+1}\\
+    (2^{m^io(m)})^k(2^{m^io(m)} - 1) &\mid m^{i+1}, \forall k \in \mathbb{N}\\
+    2^{m^io(m)(k+1)} - 2^{m^io(m)k} &=  m^{i+1}t, \exists t \in \mathbb{N}\\
+    \sum^{m-1}_{k=0}2^{m^io(m)(k+1)} - 2^{m^io(m)k} &= \sum^{m-1}_{k=0}m^{i+1}t\label{why}\\
+    2^{m^{i+1}o(m)} - 2^{m^io(m)0} &= m(m^{i+1}t)\\
+    2^0 &\equiv 2^{m^{i+1}o(m)} \mod m^{i+1}
+  \end{align}
+  \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
+  
+  This result, allows us to find the period  of any power of any (odd) prime number\footnote{Any power of 2 has period 1}. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well. 
   \subsubsection{Motivating Examples}
   \begin{itemize}
   \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
