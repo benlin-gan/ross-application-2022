@@ -11,6 +11,7 @@
   \maketitle
   \newpage
   \section{Problem 1: Powers of 2 in $\mathbb{Z}_m$}
+  Note: Throughout this section I will use $\mathbb{N}$ to refer to the set of non-negative integers.
   \subsection{Playing with $\mathbb{Z}_m$}
   \begin{align*}
     (2^n) &= (2, 4, 6, 8, 16, 32, 64, 60, 52, 36, 4, 6, 8, ...)   \hspace{1em}  (\textrm{in } \mathbb{Z}_{68})\\ 
@@ -94,7 +95,7 @@
   \item $o(9) = 6$ : $(2, 4, 8, 7, 5, 1, 2, 4, 8 ...)$
   \item $o(27) = 18$ : $(2, 4, 8, 16, 5, 10, 20, 13, 26, 25, 23, 19, 11, 22, 17, 7, 14, 1, 2, 4, 8 ...)$
   \item Extrapolating, it seems like $o(3m) = 3o(m)$
-  \item (Editing: the above sems to only be true for numbers with factors that have large powers of 3)
+  \item (Editing: the above seems to only be true for numbers with factors that have large powers of 3)
   \item $o(7) = 3$ and $o(21) = 6$ and $o(63) = 6$ but $o(189) = 18$ and $o(567) = 54$
   \item 3 cases observed: $o(3m) = o(m)$, $o(3m) = 2o(m)$, or $o(3m) = 3o(m)$
   \end{itemize}
@@ -156,18 +157,71 @@
   \item $3$, If $m$ divides 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ doesn't divide 3
   \end{itemize}
   \subsection{Generalized Period Finding}
-  $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
+  \subsubsection{Motivating Examples}
   \begin{itemize}
-  \item I conjecture that $o(m)o(n) = o(mn)$
-  \item if $\gcd(m, n) = 1$?
+  \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
+  \item $o(m)o(n) = o(mn)$?
+  \item only if $\gcd(m, n) = 1$?
+  \item Counterexample: $o(3) = 2$, $o(11) = 10$, $o(33) = 10$
+  \item Maybe instead $\gcd(o(m), o(n))$? 
   \end{itemize}
-  \subsubsection{Proof of $o(m)o(n) = o(mn)$}
-  Given that $2^m \equiv 2^{2m} \mod m$ and $2^n \equiv 2^{2n} \mod n$. Suppose also that $\exists k, l \in \mathbb{N}$ such that $2^k \equiv 0 \mod n$ and $2^l \equiv 0 \mod m$ then multiplying, we have:
+  \subsubsection{Generalizing Prior Techniques}
+  Let's try and generalize the table we made in proving $o(3m)$. We start by noting that because the tail of all odd $\mathbb{Z}_m$ is $-1$, we can plug in $a=0$, in  \eqref{perdef} to get:
   \begin{align}
-    2^m &\equiv 2^{2m+k} \mod nm \\
-    2^n &\equiv 2^{2n+l} \mod nm 
+    \forall b \in \mathbb{N}, 2^{0} \equiv 2^{bo(m)} \mod m\\
+    2^0 \equiv 2^{o(m)} \equiv 2^{2o(m)}\equiv 2^{3o(m)} \equiv ... \mod m\\
+    \forall k \in \mathbb{N}, 2^{(k+1)o(m)} \equiv 2^{ko(m)} \mod m\\
+    2^{(k+1)o(m)} - 2^{ko(m)} \mid m \label{weak}
   \end{align}
-  \subsection{Other }
+  \eqref{weak} is useful for proving the much more general fact that:
+  \begin{equation}\label{succ}
+    2^{(k+1)m^io(m)} - 2^{km^io(m)} \mid m^{i+1},\  \forall i, k \in \mathbb{N}
+  \end{equation}
+  Note that \eqref{weak} is the base case $i=0$ of \eqref{succ}. Using the inductive assumption:
+  \begin{align}
+    2^{(k+1)m^io(m)} - 2^{km^io(m)} &\mid m^{i+1}\\
+    \exists t \in \mathbb{N}, 2^{(k+1)m^io(m)} - 2^{km^io(m)} &= m^{i+1}t\\
+    \sum^{km+m-1}_{j=km}2^{(j+1)m^io(m)} - 2^{jm^io(m)} &= \sum^{km+m-1}_{j=km}m^{i+1}t\\
+    2^{(km+m)m^io(m)} - 2^{km*m^{i}o(m)} &= m * m^{i+1}t\\
+    2^{(k+1)m^{i+1}o(m)} - 2^{km^{i+1}o(m)} &\mid  m^{i+2}
+  \end{align}
+  And we have proved \eqref{succ}.
+  \subsubsection{Another Induction Proof}
+  Then, we can use \eqref{succ}, to prove that:
+  \begin{equation}\label{powerrule}
+    \forall i, m ,p, \in \mathbb{N}, m \nmid 2 \implies 2^{pm^{i}o(m)} - 1 \mid m^{i+1}
+  \end{equation}
+  To start, note that base case of $m=0$, works, because $2^0 - 1 = 0$, which divides all positive integers. Then starting from the inductive assumption:
+  \begin{equation}\label{assume}
+    2^{pm^io(m)} - 1 \mid m^{i+1}
+  \end{equation}
+  add \eqref{succ} (with $p$ plugged in for $k$) to get:
+  \begin{align}
+    \eqref{assume} + \eqref{succ} &= 2^{(p+1)m^io(m)} - 2^{pm^io(m)} +2^{pm^io(m)} - 1\\
+    &= 2^{(p+1)m^io(m)} - 1 \label{pushed}
+  \end{align}
+  Since both \eqref{assume} and \eqref{succ} divide $m^{i+1}$, so does their sum, \eqref{pushed}, so we have proved \eqref{powerrule} by induction.
+  \subsubsection{Proof of $o(mn) = \gcd(o(m), o(n))$}
+  Let us try plugging in $o(m)$ into \eqref{perdef}:
+  \begin{equation}\label{start}
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bo(m)} \mod m, a \geq \rho(m)
+  \end{equation}
+  Essentially our task is to find the smallest $b$ (with the additional restiction that $a \geq \rho(mn)$), such that the left side of the equation is true mod $mn$.\\ 
+
+  This is substantially easier if $m$ and $n$ are relatively prime and odd, because then we only need to additionally prove that the left side of the equation is also true mod $n$:
+  \begin{equation}
+    \forall a \in \mathbb{N}, 2^a \equiv 2^{a + bo(m)} \mod n, a \geq \rho(mn)
+  \end{equation}
+  If we substract $2^a$ from \eqref{start}, we get:
+  \begin{equation}
+    2^{a+bo(m)} - 2^a \mid m 
+  \end{equation}
+  Because we are assuming that m is odd, we can divide by $2^a$:
+  \begin{equation}
+    2^{bo(m)} - 1 \mid m
+  \end{equation}
+
+  \subsubsection{Putting It All Together}
   \section{Problem 2: Algebraic Properties}
   \subsection{Properties Summary}
   Given some set $S$ over which $+$ and $\times$ are defined it satisifies:
