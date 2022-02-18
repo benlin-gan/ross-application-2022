@@ -43,8 +43,10 @@
   \subsubsection{Generalized Tail Finding}
   Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ doesn't divide 2, but given a high enough $k$ it will divide the largest odd factor of $m$.\\
 
-  We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that $2^a \equiv 1 \mod m$.\\
-
+  We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that:
+  \begin{align}
+    2^a \equiv 1 \mod 2m+1, \exists a, \forall m \in \mathbb{N}
+  \end{align}
   Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$\footnote{This implies that for odd numbers, the tail will be $-1$. Think of the repeated part as having already started, and the first term of $1$ being skipped. We know that $1$ must be a possible residual of $2^n \mod m, \forall m$, and thus that it must precede $2$. Since the first term is $2$, it's sort of like we added negative terms to the beginning of the sequence}.
   \subsection{Part C: Determining the Period}
   \subsubsection{Examples of Periods}
@@ -200,7 +202,7 @@
   \end{equation}
   Using \eqref{a}, we can conclude that $m^io(m)$ is a multiple of $o(m^{i+1})$. To prove instead that:
   \begin{equation}
-    \forall m, i \in \mathbb{N}, m \nmid 2 \implies o(m^{i+1}) = m^io(m)
+    \forall m, i \in \mathbb{N}, m \nmid 2 \implies o(m^{i+1}) = m^io(m) 
   \end{equation}
   We additionally need to prove that $m^i$ is the \emph{smallest} coefficient $k$ such that:
   \begin{equation}
@@ -220,38 +222,34 @@
     2^{m^{i+1}o(m)} - 2^{m^io(m)0} &= m(m^{i+1}t)\\
     2^0 &\equiv 2^{m^{i+1}o(m)} \mod m^{i+1}
   \end{align}
-  \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
+  \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times\footnote{Technically, the original numbers might also be divisible by $m^{i+2}$, but in that case too many terms were added in previous steps, and also it can't be true in the base case, because only } to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
   
-  This result, allows us to find the period  of any power of any (odd) prime number\footnote{Any power of 2 has period 1}. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well. 
+  This result allows us to find the period  of any power of any (odd) prime number. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well\footnote{Powers of 2 can be added without consequence, because $o(2m) = o(m)$}.
   \subsubsection{Motivating Examples}
   \begin{itemize}
   \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
   \item $o(m)o(n) = o(mn)$?
   \item only if $\gcd(m, n) = 1$?
   \item Counterexample: $o(3) = 2$, $o(11) = 10$, $o(33) = 10$
-  \item Maybe instead $\gcd(o(m), o(n))$? 
+  \item Maybe instead $\lcm(o(m), o(n))$? 
   \end{itemize}
-  \subsubsection{Proof of $o(mn) = \gcd(o(m), o(n))$}
-  Let us try plugging in $o(m)$ into \eqref{perdef}:
+  \subsubsection{Proof of $o(mn) = \lcm(o(m), o(n))$}
+  Because we can freely multiply by 2, we only need to consider numbers that are odd, which are more well behaved. The product of two odd numbers is odd, so $\rho(mn) = -1$, so $o(mn)$ is the smallest positive integer satisfying:
   \begin{equation}\label{start}
-    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bo(m)} \mod m, a \geq \rho(m)
+    2^0 \equiv 2^{o(mn)} \mod mn
   \end{equation}
-  Essentially our task is to find the smallest $b$ (with the additional restiction that $a \geq \rho(mn)$), such that the left side of the equation is true mod $mn$.\\ 
-
-  This is substantially easier if $m$ and $n$ are relatively prime and odd, because then we only need to additionally prove that the left side of the equation is also true mod $n$:
-  \begin{equation}
-    \forall a \in \mathbb{N}, 2^a \equiv 2^{a + bo(m)} \mod n, a \geq \rho(mn)
-  \end{equation}
-  If we substract $2^a$ from \eqref{start}, we get:
-  \begin{equation}
-    2^{a+bo(m)} - 2^a \mid m 
-  \end{equation}
-  Because we are assuming that m is odd, we can divide by $2^a$:
-  \begin{equation}
-    2^{bo(m)} - 1 \mid m
-  \end{equation}
-
+  If we further assume that $m$ and $n$ are relatively prime (which we can still do if we make $m$ and $n$ powers of different prime numbers). We can conclude:
+  \begin{align}
+    2^0 \equiv 2^{o(mn)} \mod m \land 2^0 \equiv 2^{o(mn)} \mod n
+  \end{align}
+  But we also know, given that $m$ and $n$ are also odd, that:
+  \begin{align}
+    2^0 &\equiv 2^{b_mo(m)} \mod m, \forall b_m \in \mathbb{N}\\
+    2^0 &\equiv 2^{b_no(n)} \mod n, \forall b_n \in \mathbb{N}
+  \end{align}
+  So we find that any multiple of $o(m)$ and $o(n)$ will satsify \eqref{start}, and the least common multiple is the actual period, o(mn).
   \subsubsection{Putting It All Together}
+  We need one more thing before we're done, namely, a way to get the period of prime numbers. 
   \section{Problem 2: Algebraic Properties}
   \subsection{Properties Summary}
   Given some set $S$ over which $+$ and $\times$ are defined it satisifies:
