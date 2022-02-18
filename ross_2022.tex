@@ -157,14 +157,6 @@
   \item $3$, If $m$ divides 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ doesn't divide 3
   \end{itemize}
   \subsection{Generalized Period Finding}
-  \subsubsection{Motivating Examples}
-  \begin{itemize}
-  \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
-  \item $o(m)o(n) = o(mn)$?
-  \item only if $\gcd(m, n) = 1$?
-  \item Counterexample: $o(3) = 2$, $o(11) = 10$, $o(33) = 10$
-  \item Maybe instead $\gcd(o(m), o(n))$? 
-  \end{itemize}
   \subsubsection{Generalizing Prior Techniques}
   Let's try and generalize the table we made in proving $o(3m)$. We start by noting that because the tail of all odd $\mathbb{Z}_m$ is $-1$, we can plug in $a=0$, in  \eqref{perdef} to get:
   \begin{align}
@@ -201,6 +193,24 @@
     &= 2^{(p+1)m^io(m)} - 1 \label{pushed}
   \end{align}
   Since both \eqref{assume} and \eqref{succ} divide $m^{i+1}$, so does their sum, \eqref{pushed}, so we have proved \eqref{powerrule} by induction.
+  \subsubsection{The Bigger Picture}
+  The reason that \eqref{powerrule} is useful, is that it allows us to get $o(m^i)$, for any odd $m$ as long as we know $o(m)$. We can quickly plug in $p = 1$ and rearrange it to get:
+  \begin{equation}
+    2^0 \equiv 2^{0+m^io(m)} \mod m^{i+1}
+  \end{equation}
+  Using \eqref{a}, we can conclude that $m^io(m)$ is a multiple of $o(m^{i+1})$. Using \eqref{b}, we can conclude that $o(m^{i+1})$ is a multiple of $m^io(m)$. Thus, combined we have that:
+  \begin{equation}
+    \forall m, i \in \mathbb{N}, m \nmid 2 \implies o(m^{i+1}) = m^io(m)
+  \end{equation}
+  This result, allows us to find the period of any power of a prime number\footnote{Any power of 2 has period 1}. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well. 
+  \subsubsection{Motivating Examples}
+  \begin{itemize}
+  \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
+  \item $o(m)o(n) = o(mn)$?
+  \item only if $\gcd(m, n) = 1$?
+  \item Counterexample: $o(3) = 2$, $o(11) = 10$, $o(33) = 10$
+  \item Maybe instead $\gcd(o(m), o(n))$? 
+  \end{itemize}
   \subsubsection{Proof of $o(mn) = \gcd(o(m), o(n))$}
   Let us try plugging in $o(m)$ into \eqref{perdef}:
   \begin{equation}\label{start}
