@@ -224,7 +224,7 @@
   \end{align}
   \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times\footnote{Technically, the original numbers might also be divisible by $m^{i+2}$, but in that case too many terms were added in previous steps, and also it can't be true in the base case, because only } to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
   
-  This result allows us to find the period  of any power of any (odd) prime number. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well\footnote{Powers of 2 can be added without consequence, because $o(2m) = o(m)$}.
+  This result allows us to find the period  of any power of any (odd) prime number with known period. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well\footnote{Powers of 2 can be added without consequence, because $o(2m) = o(m)$}.
   \subsubsection{Motivating Examples}
   \begin{itemize}
   \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
@@ -249,7 +249,18 @@
   \end{align}
   So we find that any multiple of $o(m)$ and $o(n)$ will satsify \eqref{start}, and the least common multiple is the actual period, o(mn).
   \subsubsection{Putting It All Together}
-  We need one more thing before we're done, namely, a way to get the period of prime numbers. 
+  So given some postive integer $m$ with prime factorization:
+  \begin{equation}
+    2^x\prod^n_{i=0}p_i^{x_i}
+  \end{equation}
+  We can conclude that:
+  \begin{equation}
+    o(m) = \lcm(p_0^{(x_0-1)}o(p_0), p_1^{(x_1-1)}o(p_1), \dots, p_n^{(x_n-1)}o(p_n))
+  \end{equation}
+  To find the period of any odd prime, we can again use the odd number shortcut: just compute the smallest positive integer $k$ such that
+  \begin{equation}
+    2^k \equiv 1 \mod p_i
+  \end{equation}
   \section{Problem 2: Algebraic Properties}
   \subsection{Properties Summary}
   Given some set $S$ over which $+$ and $\times$ are defined it satisifies:
