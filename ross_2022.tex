@@ -41,20 +41,20 @@
   \subsubsection{Tail = 2}
   if $\rho (m) = 2$ then there exists a postive integer $k > 3$ such that $2^k \equiv 2^3 \mod m$, and $2^{k-1} \not\equiv 2^2 \mod m$, and $2^{k-2} \not\equiv 2^1 \mod m$. So, if $\rho(m) = 2$, we should be able to find a $k$ such that $2^k - 8$ is a multiple of $m$, but $\forall j \in \mathbb{N}, j > 2, 2^{j} - 4$ and $\forall j \in \mathbb{N}, i > 1, 2^{i} - 2$ aren't.
   \subsubsection{Generalized Tail Finding}
-  Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ isn't divisible by 2, but given a high enough $k$ it will divide the largest odd factor of $m$.\\
+  Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ isn't divisible by 2, but given a high enough $k$ it will be divisible by the largest odd factor of $m$.\\
 
   We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that:
   \begin{align}
     2^a \equiv 1 \mod 2m+1, \exists a, \forall m \in \mathbb{N} \label{pf}
   \end{align}
-  Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$
+  Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$.
   \subsubsection{Wait a Minute!}
   The result in the previous section implies that for all odd numbers, the tail will be $-1$. While at first blush this might seem off, as it turns out, this is actually a pretty sensible answer. If we plug in $i = -1$ into our definition of $\rho$, we see it would imply that:
   \begin{align}
     &\forall m, \exists k \in \mathbb{N}, 2m+1 \mid 2^{-1+1}(2^k - 1)\\
     &\forall m, \exists k \in \mathbb{N}, 2^k \equiv 1 \mod 2m+1 \label{necc}
   \end{align}
-  But \eqref{necc} is equivalent to \eqref{pf} which we already proved in the last section. Thus, we can see that the $-1$ is purely a consequence of the $(2^n)$ sequence starting with $2^1$ rather than $2^0$. This property of odd values of $\mathbb{Z}_m$ will be very useful later on.
+  But \eqref{necc} is equivalent to \eqref{pf} which we already proved in the last section. Thus, we can see that the $-1$ is purely a consequence of the $(2^n)$ sequence starting with $2^1$ rather than $2^0$. This property of odd moduli will be very useful later on.
   \subsection{Part C: Determining the Period}
   \subsubsection{Examples of Periods}
   \begin{itemize}
@@ -69,7 +69,7 @@
   \begin{equation}\label{perdef}
     \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bx} \mod m, a \geq \rho(m)
   \end{equation}
-  In practice, we don't need to prove equation \eqref{perdef} holds for all $a$, because once we prove if for a single $a$, the rest follows due to the periodic nature of the $(2^n)$ sequence. Additionally, there are actually infinite solutions to \eqref{perdef}, for any solution $x$, all multiples of $x$, will also satisfy the equation. However, only the smallest solution to the equation is the period.\\
+  In practice, we don't need to prove equation \eqref{perdef} holds for all $(a,b)$, because once we prove if for a single $(a,b)$, the rest follows due to the periodic nature of the $(2^n)$ sequence. Additionally, there are actually infinite solutions to \eqref{perdef}, for any solution $x$, all multiples of $x$, will also satisfy the equation. However, only the smallest solution to the equation is the period.\\
   
   This means that even if we can prove an equation of the form,
   \begin{equation}\label{a}
@@ -95,9 +95,9 @@
   \end{equation}
   So $r$ must be equal to some $bn$ and we are done.\\
 
-  A lot of the equations above depend on some number being $\geq \rho(m)$. An easy way to deal with restriction is to note that $\rho(m)$ is cannot be larger than $m$, because there are only $m$ unique elements in $\mathbb{Z}_m$. 
+  A lot of the equations above depend on some number being $\geq \rho(m)$. An easy way to deal with restriction is to note that $\rho(m)$ is cannot be larger than $m$, because there are only $m$ unique elements in $\mathbb{Z}_m$. Alternatively, we can try to use an odd value for $m$, where $\rho(m) = -1$.
   \subsubsection{Proof of $o(2m) = o(m)$}
-  We know that $2^{2m+o(m)} \equiv 2^{2m} \mod m$. So, if we multiply both sides by two, we get that $2^{2m + o(m) + 1}\equiv 2^{2m+1} \mod 2m$, therefore by \eqref{a}, $o(m)$ is a multiple of $o(2m)$, and by \eqref{b}, $o(2m)$ is a multiple of $o(m)$, and putting these together we can conclude that $o(2m) = o(m)$  
+  We know that $2^{2m+o(m)} \equiv 2^{2m} \mod m$. So, if we multiply both sides by two, we get that $2^{2m + o(m) + 1}\equiv 2^{2m+1} \mod 2m$, therefore by \eqref{a}, $o(m)$ is a multiple of $o(2m)$, and by \eqref{b}, $o(2m)$ is a multiple of $o(m)$, and putting these together we can conclude that $o(2m) = o(m)$.
   \subsubsection{More Examples of Periods}
   \begin{itemize}
   \item $o(3) = 2$ : $(2, 1, 2, 1, 2 ...)$
@@ -117,7 +117,7 @@
   \begin{equation}
     3 \mid 2^{3m+o(m)*2}-2^{3m} 
   \end{equation}
-  Because $n$ is relatively prime to 3, we know the left side of the equation also divides $3m$:
+  Because $n$ is relatively prime to 3, we know the left side of the equation also is divisible by $3m$:
   \begin{equation}
     3m \mid 2^{3m+2o(m)} - 2^{3m}
   \end{equation}
@@ -135,7 +135,7 @@
     o(m) = ko(3m),\  k \in \mathbb{N}
   \end{align}
   \eqref{om} is only true if $o(m)$ is even\footnote{it is a solution to \eqref{perdef} where $a = 3m$ and $b = 1$}. So if $o(m)$ is even, $o(3m) = o(m)$, otherwise $o(3m) = 2o(m)$.
-  \subsubsection{Proof for $o(m)$ if $m \mid 3$}
+  \subsubsection{Proof for $o(m)$ if $3 \mid m$}
   We want to find the smallest positive integer $k$ such that $3m \mid 2^{3m + ko(m)} - 2^{3m}$. So:
   \begin{equation}
     3 \mid \frac{2^{3m + ko(m)} - 2^{3m}}{m}
@@ -190,9 +190,9 @@
   \subsubsection{Another Induction Proof}
   Then, we can use \eqref{succ}, to prove that:
   \begin{equation}\label{powerrule}
-    \forall i, m ,p, \in \mathbb{N}, 2 \nmid m \implies m^{i+1} \mid 2^{pm^{i}o(m)} - 1
+    \forall i, m ,p \in \mathbb{N}, 2 \nmid m \implies m^{i+1} \mid 2^{pm^{i}o(m)} - 1
   \end{equation}
-  To start, note that base case of $m=0$, works, because $2^0 - 1 = 0$, which is divisible by all positive integers. Then starting from the inductive assumption:
+  To start, note that base case of $p=0$, works, because $2^0 - 1 = 0$, which is divisible by all positive integers. Then starting from the inductive assumption:
   \begin{equation}\label{assume}
     m^{i+1} \mid 2^{pm^io(m)} - 1 
   \end{equation}
