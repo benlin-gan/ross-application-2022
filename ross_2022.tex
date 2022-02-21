@@ -35,19 +35,26 @@
 
   Looking at the example given in the problem statment where $m=10$, we can see that $\rho(10) = 0$. We should be able to find a $k$ such that $2^k -2$ is a multiple of $m$, and indeed $k=5$ works.
   \subsubsection{Tail = 1}
-  If $\rho (m) = 1$, then there exists a postive integer $k > 2$ such that $2^k \equiv 2^2 \mod m$, and $2^{k-1} \not\equiv 2^1 \mod m.$ Then, using the logic in the last section, if $\rho(m) = 1$, we should be able to find a $k$ such that $2^k - 4$ is a multiple of $m$ but $2^{k-1} - 2$ is not.\\
+  If $\rho (m) = 1$, then there exists a postive integer $k > 2$ such that $2^k \equiv 2^2 \mod m$, and $\forall j \in \mathbb{N}, j > 1 \mid 2^{j} \not\equiv 2^1 \mod m$. Then, using the logic in the last section, if $\rho(m) = 1$, we should be able to find a $k$ such that $2^k - 4$ is a multiple of $m$ but $2^j - 2$ is not.\\
 
-  Looking at $\rho(28) = 1$, we can see that $28$ is a factor of $2^5 - 4$, but not a factor of $2^4 - 2$. 
+  Looking at $\rho(28) = 1$, we can see that $2^5 - 4$ is a multiple of 28, and we know that $\forall j \in \mathbb{N}, j > 1, 28 \nmid 2^j - 2$, because $2^j$ will be divisible by 4, so $2^j - 2$ won't, so it also isn't divisible by 28. 
   \subsubsection{Tail = 2}
-  if $\rho (m) = 2$ then there exists a postive integer $k > 3$ such that $2^k \equiv 2^3 \mod m$, and $2^{k-1} \not\equiv 2^2 \mod m$, and $2^{k-2} \not\equiv 2^1 \mod m$. So, if $\rho(m) = 2$, we should be able to find a $k$ such that $2^k - 8$ is a multiple of $m$, but $2^{k-1} - 4$ and $2^{k-2} - 2$ aren't.
+  if $\rho (m) = 2$ then there exists a postive integer $k > 3$ such that $2^k \equiv 2^3 \mod m$, and $2^{k-1} \not\equiv 2^2 \mod m$, and $2^{k-2} \not\equiv 2^1 \mod m$. So, if $\rho(m) = 2$, we should be able to find a $k$ such that $2^k - 8$ is a multiple of $m$, but $\forall j \in \mathbb{N}, j > 2, 2^{j} - 4$ and $\forall j \in \mathbb{N}, i > 1, 2^{i} - 2$ aren't.
   \subsubsection{Generalized Tail Finding}
-  Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ doesn't divide 2, but given a high enough $k$ it will divide the largest odd factor of $m$.\\
+  Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ isn't divisible by 2, but given a high enough $k$ it will divide the largest odd factor of $m$.\\
 
   We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that:
   \begin{align}
-    2^a \equiv 1 \mod 2m+1, \exists a, \forall m \in \mathbb{N}
+    2^a \equiv 1 \mod 2m+1, \exists a, \forall m \in \mathbb{N} \label{pf}
   \end{align}
-  Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$\footnote{This implies that for odd numbers, the tail will be $-1$. Think of the repeated part as having already started, and the first term of $1$ being skipped. We know that $1$ must be a possible residual of $2^n \mod m, \forall m$, and thus that it must precede $2$. Since the first term is $2$, it's sort of like we added negative terms to the beginning of the sequence}.
+  Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$
+  \subsubsection{Wait a Minute!}
+  The result in the previous section implies that for all odd numbers, the tail will be $-1$. While at first blush this might seem off, as it turns out, this is actually a pretty sensible answer. If we plug in $i = -1$ into our definition of $\rho$, we see it would imply that:
+  \begin{align}
+    &\forall m, \exists k \in \mathbb{N}, 2m+1 \mid 2^{-1+1}(2^k - 1)\\
+    &\forall m, \exists k \in \mathbb{N}, 2^k \equiv 1 \mod 2m+1 \label{necc}
+  \end{align}
+  But \eqref{necc} is equivalent to \eqref{pf} which we already proved in the last section. Thus, we can see that the $-1$ is purely a consequence of the $(2^n)$ sequence starting with $2^1$ rather than $2^0$. This property of odd values of $\mathbb{Z}_m$ will be very useful later on.
   \subsection{Part C: Determining the Period}
   \subsubsection{Examples of Periods}
   \begin{itemize}
@@ -72,7 +79,7 @@
   
   The period of any multiple of $m$ must be a multiple of the period of $m$, formally:
   \begin{equation}\label{b}
-    o(m) = n \implies o(im) = jn \mid i, j \in \mathbb{N}
+    o(m) = n \implies o(im) = jn \mid \forall i, \exists j \in \mathbb{N}
   \end{equation}
   To prove \eqref{b}, let $o(im) = r$. Then plugging into \eqref{perdef}:
   \begin{equation}
@@ -225,7 +232,7 @@
   \end{align}
   \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times\footnote{Technically, the original numbers might also be divisible by $m^{i+2}$, but in that case too many terms were added in previous steps, and also it can't be true in the base case, because only } to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
   
-  This result allows us to find the period  of any power of any (odd) prime number with known period. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well\footnote{Powers of 2 can be added without consequence, because $o(2m) = o(m)$}.
+  This result allows us to find the period of any power of any (odd) prime number with known period. Then we just need some way to multiply together these powers, and we can find the period of any composite number as well\footnote{Powers of 2 can be added without consequence, because $o(2m) = o(m)$}.
   \subsubsection{Motivating Examples}
   \begin{itemize}
   \item $o(5) = 4$, $o(7) = 3$, and $o(35) = 12$
