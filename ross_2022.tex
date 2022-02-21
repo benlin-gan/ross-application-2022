@@ -21,17 +21,17 @@
   \subsection{Part A: Proof of Periodicity}
   Assume there exists a $\exists k, l \in \mathbb{N}$ such that $k \neq l$, and $2^k \equiv 2^l \mod m$. Then
   \begin{align}
-    2^k - 2^l \mid m
+    m \mid 2^k - 2^l 
   \end{align}
   Then since any multiple of a number is divisible by everything the original number was divisible by:
   \begin{align}
-    2^i(2^k - 2^l) &\mid m, \forall i \in \mathbb{N}\\
-    2^{k+i} \equiv 2^{l+i} &\mod m, \forall i \in \mathbb{N}
+    m &\mid 2^i(2^k-2^l), \forall i \in \mathbb{N}\\
+    2^{k+i} &\equiv 2^{l+i} \mod m, \forall i \in \mathbb{N}
   \end{align}
   Therefore once we find one repeated element in $(2^n)$, everything after it also repeats. Furthermore, we know that this repeated element $(2^k, 2^l)$ must exist, because there are only $m$ unique elements in $\mathbb{Z}_m$, but an infinite number of elements in $(2^n)$.
   \subsection{Part B: Tail Function}
   \subsubsection{Tail = 0}
-  If $\rho (m) = 0$, then there exists a postive integer $k > 1$ such that $2^k \equiv 2^1 \mod m$. Then $2^k - 2 \mid m$. This simple manipulation also proves the converse, that $p(m) = 0$ for all $m$ where there exists a postive integer $k$, such that $2^k - 2$ is a multiple of $m$.\\
+  If $\rho (m) = 0$, then there exists a postive integer $k > 1$ such that $2^k \equiv 2^1 \mod m$. Then $m \mid 2^k - 2$. This simple manipulation also proves the converse, that $p(m) = 0$ for all $m$ where there exists a postive integer $k$, such that $2^k - 2$ is a multiple of $m$.\\
 
   Looking at the example given in the problem statment where $m=10$, we can see that $\rho(10) = 0$. We should be able to find a $k$ such that $2^k -2$ is a multiple of $m$, and indeed $k=5$ works.
   \subsubsection{Tail = 1}
@@ -101,41 +101,41 @@
   \item $o(7) = 3$ and $o(21) = 6$ and $o(63) = 6$ but $o(189) = 18$ and $o(567) = 54$
   \item 3 cases observed: $o(3m) = o(m)$, $o(3m) = 2o(m)$, or $o(3m) = 3o(m)$
   \end{itemize}
-  \subsubsection{Proof for  $o(3m)$ if $m \nmid 3$}
-  Let $m \nmid 3$. Then, plugging in $a = 3m$, $b = 2$ into \eqref{perdef}:
+  \subsubsection{Proof for  $o(3m)$ if $3 \nmid m$}
+  Let $3 \nmid m$. Then, plugging in $a = 3m$, $b = 2$ into \eqref{perdef}:
   \begin{equation}
-    2^{3m+2o(m)}-2^{3m}\mid m
+    m \mid 2^{3m+2o(m)}-2^{3m}
   \end{equation}
   We can also plug in $a = 3m$, $b = o(m)$ into \eqref{perdef} for $\mathbb{Z}_3$.\footnote{recall that $o(3) = 2$}
   \begin{equation}
-    2^{3m+o(m)*2}-2^{3m} \mid 3
+    3 \mid 2^{3m+o(m)*2}-2^{3m} 
   \end{equation}
   Because $n$ is relatively prime to 3, we know the left side of the equation also divides $3m$:
   \begin{equation}
-    2^{3m+2o(m)} - 2^{3m} \mid 3m
+    3m \mid 2^{3m+2o(m)} - 2^{3m}
   \end{equation}
   Applying \eqref{a} to this, we can conclude $2o(m)$ is a multiple of $o(3m)$. Applying \eqref{b}, we also know that $o(3m)$ is a multiple of $o(m)$. Thus, $o(3m)$ is either $2o(m)$ or $o(m)$. To distinguish between these cases, we must consider if:
   \begin{equation}\label{om}
-    2^{3m + o(m)} - 2^{3m} \mid 3
+    3 \mid 2^{3m + o(m)} - 2^{3m}
   \end{equation}
   Which, similarly combines with:
   \begin{equation}
-    2^{3m + o(m)} - 2^{3m} \mid m
+    m \mid 2^{3m + o(m)} - 2^{3m}
   \end{equation}
   to imply:
   \begin{align}
-    2^{3m + o(m)} - 2^{3m} \mid 3m \\
+    3m \mid 2^{3m + o(m)} - 2^{3m} \\
     o(m) = ko(3m),\  k \in \mathbb{N}
   \end{align}
   \eqref{om} is only true if $o(m)$ is even\footnote{it is a solution to \eqref{perdef} where $a = 3m$ and $b = 1$}. So if $o(m)$ is even, $o(3m) = o(m)$, otherwise $o(3m) = 2o(m)$.
   \subsubsection{Proof for $o(m)$ if $m \mid 3$}
-  We want to find the smallest positive integer $k$ such that $2^{3m + ko(m)} - 2^{3m} \mid 3m$. So:
+  We want to find the smallest positive integer $k$ such that $3m \mid 2^{3m + ko(m)} - 2^{3m}$. So:
   \begin{equation}
-    \frac{2^{3m + ko(m)} - 2^{3m}}{m} \mid 3
+    3 \mid \frac{2^{3m + ko(m)} - 2^{3m}}{m}
   \end{equation}
    The we divide by $2^{3m}$,\footnote{This is allowed, because $2^{3m}$ is relatively prime to 3} to get that:
   \begin{equation}
-    \frac{2^{ko(m)}-1}{m} \mid 3
+    3 \mid \frac{2^{ko(m)}-1}{m}
   \end{equation}
   More intuitively, the above equation implies that the power of three in the numerator $2^{3m + ko(m)}-2^{3m}$, should be at least 1 greater than the power of three in the denomintaor $m$. So, let us consider the power of the factor of 3 for all possible $a$ in $2^a-1$.\\
   \begin{tabular} {|c|c|c|c|c|c|c|c|}
@@ -147,16 +147,16 @@
   
   It seems like we found another periodic pattern! Whenever you go from the $n$th to the $n+2$th term in the sequence, $2^{n+2} - 2^n$ is added, which is always equal to 0 modulo 3, as $o(3) = 2$. Additionally every $3^1*2$ terms, $2^a-1$ is divisible by $3^2$, as a number divisible by 3 has been added a multiple of 3 times to 0. Every $3^2*2$ terms, the $2^a-1$ is divisible by $3^3$, as a number divisible by 3 has been added a multiple of $3^2$ times to 0. So in general, for all postive even $a$, the highest power of three in $2^a - 1$ is one more than the highest power of 3 in $\frac{a}{2}$.\\
 
-  Thus, if $\frac{\frac{o(m)}{2} * 3}{m} \mid 3$, then $2^{o(m)}-1 \mid 3m$, so $2^{3m + o(m)}-2^{3m} \mid 3m$, so $o(m)$ is a multiple of $o(3m)$. Taking into account the fact that $o(3m)$ is a multiple of $o(m)$, we find that $o(m)= o(3m)$.\\
+  Thus, if $3 \mid \frac{\frac{o(m)}{2} * 3}{m}$, then $3m \mid 2^{o(m)}-1$, so $3m \mid 2^{3m + o(m)}-2^{3m}$, so $o(m)$ is a multiple of $o(3m)$. Taking into account the fact that $o(3m)$ is a multiple of $o(m)$, we find that $o(m)= o(3m)$.\\
 
-  If instead $\frac{\frac{o(m)}{2} * 3}{m} \nmid 3$, just multiply both sides by three to get $\frac{\frac{3o(m)}{2} * 3}{m} \mid 3$. So instead $2^{3o(m)} - 1 \mid 3m$, so $2^{3m+3o(m)} - 2^{3m} \mid 3m$. So $3o(m)$ is a multiple of $o(3m)$, but $o(3m)$ is also a multiple of $o(m)$, but not $o(m)$ (because otherwise the we could run the logic in the previous paragraph in reverse and reach a contradiction), which leaves only the solution $o(3m) = 3o(m)$.
+  If instead $3\nmid \frac{\frac{o(m)}{2} * 3}{m}$, just multiply both sides by three to get $3 \mid \frac{\frac{3o(m)}{2} * 3}{m}$. So instead $3m \mid 2^{3o(m)} - 1$, so $3m \mid 2^{3m+3o(m)} - 2^{3m}$. So $3o(m)$ is a multiple of $o(3m)$, but $o(3m)$ is also a multiple of $o(m)$, but also is not $o(m)$ (because otherwise the we could run the logic in the previous paragraph in reverse and reach a contradiction), which leaves only the solution $o(3m) = 3o(m)$.
   \subsubsection{Summary of $o(3m)$}
   $o(3m) = ko(m)$, where $k$ is equal to:
   \begin{itemize}
-  \item $1$, If $m$ doesn't divide 3 and $o(m)$ is even
-  \item $2$, If $m$ doesn't divide 3 and $o(m)$ is odd
-  \item $1$, If $m$ divides 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ divides 3
-  \item $3$, If $m$ divides 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ doesn't divide 3
+  \item $1$, If $m$ isn't divisible by 3 and $o(m)$ is even
+  \item $2$, If $m$ isn't divisible by 3 and $o(m)$ is odd
+  \item $1$, If $m$ is divisible by 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ is divisible by 3
+  \item $3$, If $m$ is divisible by 3 and $\frac{\frac{o(m)}{2} * 3}{m}$ isn't divisible by 3
   \end{itemize}
   \subsection{Generalized Period Finding}
   \subsubsection{Generalizing Prior Techniques}
@@ -165,36 +165,36 @@
     \forall b \in \mathbb{N}, 2^{0} \equiv 2^{bo(m)} \mod m\\
     2^0 \equiv 2^{o(m)} \equiv 2^{2o(m)}\equiv 2^{3o(m)} \equiv ... \mod m\\
     \forall k \in \mathbb{N}, 2^{(k+1)o(m)} \equiv 2^{ko(m)} \mod m\\
-    2^{(k+1)o(m)} - 2^{ko(m)} \mid m \label{weak}
+    m \mid 2^{(k+1)o(m)} - 2^{ko(m)} \label{weak}
   \end{align}
   \eqref{weak} is useful for proving the much more general fact that:
   \begin{equation}\label{succ}
-    2^{(k+1)m^io(m)} - 2^{km^io(m)} \mid m^{i+1},\  \forall i, k \in \mathbb{N}
+    m^{i+1} \mid 2^{(k+1)m^io(m)} - 2^{km^io(m)},\  \forall i, k \in \mathbb{N}
   \end{equation}
   Note that \eqref{weak} is the base case $i=0$ of \eqref{succ}. Using the inductive assumption:
   \begin{align}
-    2^{(k+1)m^io(m)} - 2^{km^io(m)} &\mid m^{i+1}\\
+    m^{i+1} \mid 2^{(k+1)m^io(m)} - 2^{km^io(m)}\\
     \exists t \in \mathbb{N}, 2^{(k+1)m^io(m)} - 2^{km^io(m)} &= m^{i+1}t\\
     \sum^{km+m-1}_{j=km}2^{(j+1)m^io(m)} - 2^{jm^io(m)} &= \sum^{km+m-1}_{j=km}m^{i+1}t\\
     2^{(km+m)m^io(m)} - 2^{km*m^{i}o(m)} &= m * m^{i+1}t\\
-    2^{(k+1)m^{i+1}o(m)} - 2^{km^{i+1}o(m)} &\mid  m^{i+2}
+    m^{i+2} \mid 2^{(k+1)m^{i+1}o(m)} - 2^{km^{i+1}o(m)} 
   \end{align}
   And we have proved \eqref{succ}.
   \subsubsection{Another Induction Proof}
   Then, we can use \eqref{succ}, to prove that:
   \begin{equation}\label{powerrule}
-    \forall i, m ,p, \in \mathbb{N}, m \nmid 2 \implies 2^{pm^{i}o(m)} - 1 \mid m^{i+1}
+    \forall i, m ,p, \in \mathbb{N}, 2 \nmid m \implies m^{i+1} \mid 2^{pm^{i}o(m)} - 1
   \end{equation}
-  To start, note that base case of $m=0$, works, because $2^0 - 1 = 0$, which divides all positive integers. Then starting from the inductive assumption:
+  To start, note that base case of $m=0$, works, because $2^0 - 1 = 0$, which is divisible by all positive integers. Then starting from the inductive assumption:
   \begin{equation}\label{assume}
-    2^{pm^io(m)} - 1 \mid m^{i+1}
+    m^{i+1} \mid 2^{pm^io(m)} - 1 
   \end{equation}
   add \eqref{succ} (with $p$ plugged in for $k$) to get:
   \begin{align}
     \eqref{assume} + \eqref{succ} &= 2^{(p+1)m^io(m)} - 2^{pm^io(m)} +2^{pm^io(m)} - 1\\
     &= 2^{(p+1)m^io(m)} - 1 \label{pushed}
   \end{align}
-  Since both \eqref{assume} and \eqref{succ} divide $m^{i+1}$, so does their sum, \eqref{pushed}, so we have proved \eqref{powerrule} by induction.
+  Since both \eqref{assume} and \eqref{succ} are divisible by $m^{i+1}$, so does their sum, \eqref{pushed}, so we have proved \eqref{powerrule} by induction.
   \subsubsection{The Bigger Picture}
   The reason that \eqref{powerrule} is useful, is that it allows us to get $o(m^i)$, for any odd $m$ as long as we know $o(m)$. We can quickly plug in $p = 1$ and rearrange it to get:
   \begin{equation}
@@ -215,12 +215,13 @@
   is a special case of the definition of $o(m)$, \eqref{perdef}, where $a=0$ and $b=1$. Then we do induction yet again. If we assume that $m^i$ is the smallest coefficient here:
   \begin{align}
     2^0 &\equiv 2^{0 + m^io(m)} \mod m^{i+1}\\
-    2^{m^io(m)} - 1 &\mid m^{i+1}\\
-    (2^{m^io(m)})^k(2^{m^io(m)} - 1) &\mid m^{i+1}, \forall k \in \mathbb{N}\\
+    m^{i+1} &\mid 2^{m^io(m)} - 1 \\
+    m^{i+1} &\mid (2^{m^io(m)})^k(2^{m^io(m)} - 1), \forall k \in \mathbb{N}\\
     2^{m^io(m)(k+1)} - 2^{m^io(m)k} &=  m^{i+1}t, \exists t \in \mathbb{N}\\
     \sum^{m-1}_{k=0}2^{m^io(m)(k+1)} - 2^{m^io(m)k} &= \sum^{m-1}_{k=0}m^{i+1}t\label{why}\\
     2^{m^{i+1}o(m)} - 2^{m^io(m)0} &= m(m^{i+1}t)\\
-    2^0 &\equiv 2^{m^{i+1}o(m)} \mod m^{i+1}
+    m^{i+2} &\mid 2^{m^{i+1}o(m)} - 2^0\\
+    2^0 &\equiv 2^{m^{i+1}o(m)} \mod m^{i+2}
   \end{align}
   \eqref{why} is optimal, because numbers divisible by $m^{i+1}$ must be added at least $m$ times\footnote{Technically, the original numbers might also be divisible by $m^{i+2}$, but in that case too many terms were added in previous steps, and also it can't be true in the base case, because only } to themselves to get a number divisible by $m^{i+2}$, and the left side is the only way to ensure that the terms remain in the form $2^a-1$ after being added. So, $m^{i+1}$ is also the smallest coefficient for $m^{i+2}$, and we are done.\\
   
