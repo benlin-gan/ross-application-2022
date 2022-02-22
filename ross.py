@@ -1,11 +1,6 @@
 import csv
 def nxt(inp, modulus):
     return inp * 2 % modulus
-def list(iters, modulus):
-    k = 2
-    for i in range(iters):
-        print(k)
-        k = nxt(k, modulus)
 def repeat(inp, modulus, times):
     for i in range(times):
         inp = nxt(inp, modulus)
