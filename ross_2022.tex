@@ -19,7 +19,7 @@
     (2^n) &= (2, 4, 6, 8, 16, 32, 64, 1, ...) \hspace{1em}     (\textrm{in } \mathbb{Z}_{127})\\
   \end{align*}
   \subsection{Part A: Proof of Periodicity}
-  Assume there exists a $\exists k, l \in \mathbb{N}$ such that $k \neq l$, and $2^k \equiv 2^l \mod m$. Then
+  Assume there $\exists k, l \in \mathbb{N}$ such that $k \neq l$, and $2^k \equiv 2^l \mod m$. Then
   \begin{align}
     m \mid 2^k - 2^l 
   \end{align}
@@ -43,9 +43,9 @@
   \subsubsection{Generalized Tail Finding}
   Given an arbitrary postive integer $m$, we know that $\rho(m)$ is the smallest postive integer $i$ such that $\exists k \in \mathbb{N}, 2^{i+1}(2^k - 1)$ is a multiple of $m$. Obviously, $2^k-1$ isn't divisible by 2, but given a high enough $k$ it will be divisible by the largest odd factor of $m$.\\
 
-  We know this because of the periodic nature of the $(2^n)$ sequence. Given that there exists $a, b \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod m$, for all odd values of $m$, we can divide by $2^b$ to conclude that:
+  We know this because of the periodic nature of the $(2^n)$ sequence. Given that $\exists a, \exists b, \forall m \in \mathbb{N}$, $2^{a+b} \equiv 2^b \mod 2m+1$, we can divide by $2^b$ to conclude that:
   \begin{align}
-    2^a \equiv 1 \mod 2m+1, \exists a, \forall m \in \mathbb{N} \label{pf}
+    2^a \equiv 1 \mod 2m+1 \label{pf}
   \end{align}
   Therefore the power of 2 in the prime factorization of $m$ must come solely from $2^{i+1}$, and conversely, if $2^{i+1}$ does contribute a high enough power of 2, $2^{i+1}(2^k-1)$ will be a multiple of $m$. Therefore $\rho(m)$ equals one less than the highest power of 2 in $m$.
   \subsubsection{Wait a Minute!}
@@ -67,13 +67,13 @@
   \subsubsection{Heuristics for Period Finding}
   One way to formalize what we mean by the period, is that it is the smallest positive integer $x$, such that
   \begin{equation}\label{perdef}
-    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bx} \mod m, a \geq \rho(m)
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bx} \mod m, a > \rho(m)
   \end{equation}
   In practice, we don't need to prove equation \eqref{perdef} holds for all $(a,b)$, because once we prove if for a single $(a,b)$, the rest follows due to the periodic nature of the $(2^n)$ sequence. Additionally, there are actually infinite solutions to \eqref{perdef}, for any solution $x$, all multiples of $x$, will also satisfy the equation. However, only the smallest solution to the equation is the period.\\
   
   This means that even if we can prove an equation of the form,
   \begin{equation}\label{a}
-    2^i \equiv 2^{i+j} \mod m, i \geq \rho(m)
+    2^i \equiv 2^{i+j} \mod m, i > \rho(m)
   \end{equation}
   We still won't know that $j$ is the period of $m$, only that $j$ is some multiple of the actual period.\\
   
@@ -83,19 +83,19 @@
   \end{equation}
   To prove \eqref{b}, let $o(im) = r$. Then plugging into \eqref{perdef}:
   \begin{equation}
-    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+br} \mod im, a \geq \rho(m)
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+br} \mod im, a > \rho(m)
   \end{equation}
   If the above equation, is true mod $im$, it is also true mod $m$, if we also plug in $b=1$, we get that
   \begin{equation}
-    \forall a \in \mathbb{N}, 2^a \equiv 2^{a+r} \mod m, a \geq \rho(m)
+    \forall a \in \mathbb{N}, 2^a \equiv 2^{a+r} \mod m, a > \rho(m)
   \end{equation}
   Compare this equation to what we get when we plug $m$ and $n$ into \eqref{perdef}:
   \begin{equation}
-    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bn} \mod im, a \geq \rho(m)
+    \forall a, b \in \mathbb{N}, 2^a \equiv 2^{a+bn} \mod m, a > \rho(m)
   \end{equation}
   So $r$ must be equal to some $bn$ and we are done.\\
 
-  A lot of the equations above depend on some number being $\geq \rho(m)$. An easy way to deal with restriction is to note that $\rho(m)$ is cannot be larger than $m$, because there are only $m$ unique elements in $\mathbb{Z}_m$. Alternatively, we can try to use an odd value for $m$, where $\rho(m) = -1$.
+  A lot of the equations above depend on some number being $> \rho(m)$. An easy way to deal with restriction is to note that $\rho(m)$ is cannot be larger than $m$, because there are only $m$ unique elements in $\mathbb{Z}_m$. Alternatively, we can try to use an odd value for $m$, where $\rho(m) = -1$.
   \subsubsection{Proof of $o(2m) = o(m)$}
   We know that $2^{2m+o(m)} \equiv 2^{2m} \mod m$. So, if we multiply both sides by two, we get that $2^{2m + o(m) + 1}\equiv 2^{2m+1} \mod 2m$, therefore by \eqref{a}, $o(m)$ is a multiple of $o(2m)$, and by \eqref{b}, $o(2m)$ is a multiple of $o(m)$, and putting these together we can conclude that $o(2m) = o(m)$.
   \subsubsection{More Examples of Periods}
@@ -144,7 +144,7 @@
   \begin{equation}
     3 \mid \frac{2^{ko(m)}-1}{m}
   \end{equation}
-  More intuitively, the above equation implies that the power of three in the numerator $2^{3m + ko(m)}-2^{3m}$, should be at least 1 greater than the power of three in the denomintaor $m$. So, let us consider the power of the factor of 3 for all possible $a$ in $2^a-1$.\\
+  More intuitively, the above equation implies that the power of three in the numerator $2^{ko(m)}-1$, should be at least 1 greater than the power of three in the denomintaor $m$. So, let us consider the power of the factor of 3 for all possible $a$ in $2^a-1$.\\
   \begin{tabular} {|c|c|c|c|c|c|c|c|}
     \hline $a$                             & 0 & 1 & 2 & 3 & 4  &  5 & 6 \\
     \hline $2^a-1$                         & 0 & 1 & 3 & 7 & 15 & 31 & 63\\
@@ -365,11 +365,11 @@
   which we can reduce with the help of Euler's Formula
   \begin{align}
     &= 3 + 2(\cos(\cos^{-1}(-\frac{1}{3}))) + 2(\sin(\cos^{-1}(-\frac{1}{3})))i \\  
-    &\hspace{18px} + 3(\sin(2\cos^{-1}(-\frac{1}{3}))) + 3(\sin(2\cos^{-1}(-\frac{1}{3})))i \\
-    &= 3 + -\frac{2}{3} + \frac{4\sqrt2}{3} + 3(2\sin(\cos^{-1}(-\frac{1}{3}))\cos(\cos^{-1}(-\frac{1}{3})))\\
+    &\hspace{18px} + 3(\cos(2\cos^{-1}(-\frac{1}{3}))) + 3(\sin(2\cos^{-1}(-\frac{1}{3})))i \\
+    &= 3 + -\frac{2}{3} + \frac{4\sqrt2i}{3} + 3(2\sin(\cos^{-1}(-\frac{1}{3}))\cos(\cos^{-1}(-\frac{1}{3})))i\\
     &\hspace{20px} + 3(\cos^2(\cos^{-1}(-\frac{1}{3})) - \sin^2(\cos^{-1}(-\frac{1}{3})))\\
-    &= \frac{7 + 4\sqrt2}{3} + 6(\frac{2\sqrt2 * -1}{3*3}) + 3((-\frac{1}{3})^2 - (\frac{2\sqrt2}{3})^2)\\
-    &= \frac{7 + 4\sqrt2 - 4\sqrt2}{3} + 3(\frac{1}{9} - \frac{8}{9})\\
+    &= \frac{7 + 4\sqrt2i}{3} + 6(\frac{2\sqrt2 * -1}{3*3})i + 3((-\frac{1}{3})^2 - (\frac{2\sqrt2}{3})^2)\\
+    &= \frac{7 + 4\sqrt2i - 4\sqrt2i}{3} + 3(\frac{1}{9} - \frac{8}{9})\\
     &= \frac{7 - 7}{3} \\
     &= 0
   \end{align}
